@@ -56,13 +56,22 @@ public class SlotMenu {
 	// 슬롯돌리기
 	public void playSlot() {
 		//세개의 슬롯값을 받음
-		ArrayList<Slot> slotarr = slot.playSlot();
+		String slotArr = slot.playSlot();
+		String[] returnSlot = slotArr.split(",");
+		
+		//ArrayList<Slot> slotArr = slot.playSlot();
 		//슬롯을 차례로 출력하기
-		System.out.print(slotarr);
-	
-		System.out.println();
+		if(returnSlot[3].equals("1")) {
+			System.out.println("\n금액이 부족합니다. 메뉴화면으로 돌아갑니다.\n");
+		}else {
+			System.out.println();
+			for(int i=0; i<returnSlot.length-1; i++) {
+				System.out.print(returnSlot[i]);
+		}
+		System.out.println("\n");
 		// 결과값에 대한 당첨 유무를 확인하기 위해 resultSlot 호출
 		slot.resultSlot();
+		}
 	}
 	// 슬롯 당첨유무
 	public void resultSlot() {

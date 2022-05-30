@@ -1,6 +1,7 @@
 package com.ay.slot.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.ay.slot.model.vo.Slot;
 
@@ -15,20 +16,27 @@ public class SlotController {
 	}
 	// 전재산
 	private int coin = 5000;
-	//private int jackpot = 0;
-	public ArrayList<Slot> playSlot() {
-
-		// 슬롯이 차례로 나올 출력문
-		// 첫번째 슬롯, 두번째 슬롯, 세번째 슬롯이 필요하기때문에 3번의 반복문을 돌림
-		// 이때 toString에 random값이 나오도록 오버라이딩했기때문에 6개의 항목중 하나만 출력됨
-
-		for (int i = 0; i < slotList.size(); i++) {
-			slotList.get(i).toString();
-			// 슬롯을 한번 돌릴때마다 300원씩 차감
-			coin -= 100;
-		}
+	
+	public String playSlot() {
 		
-		return slotList;
+		int noCoin = 0;
+		// 코인이 300원 미만일시 playslot불가
+		if (coin < 300) {
+			noCoin++;
+		}else{
+
+			// 슬롯이 차례로 나올 출력문
+			// 첫번째 슬롯, 두번째 슬롯, 세번째 슬롯이 필요하기때문에 3번의 반복문을 돌림
+			// 이때 toString에 random값이 나오도록 오버라이딩했기때문에 6개의 항목중 하나만 출력됨
+
+			for (int i = 0; i < slotList.size(); i++) {
+				slotList.get(i).toString();
+				// 슬롯을 한번 돌릴때마다 300원씩 차감
+				coin -= 100;
+			}
+	}
+		
+		return slotList + "," + noCoin;
 	}
 	
 	public int resultSlot() {
