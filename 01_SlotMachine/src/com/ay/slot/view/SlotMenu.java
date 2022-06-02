@@ -1,6 +1,7 @@
 package com.ay.slot.view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import com.ay.slot.controller.SlotController;
@@ -55,34 +56,36 @@ public class SlotMenu {
 	}
 	// 슬롯돌리기
 	public void playSlot() {
-		//세개의 슬롯값을 받음
-		String slotArr = slot.playSlot();
-		String[] returnSlot = slotArr.split(",");
+		//map을 입력받아서 하나씩 풀기
+		HashMap<String, Object> map = slot.playSlot();
 		
-		//ArrayList<Slot> slotArr = slot.playSlot();
-		//슬롯을 차례로 출력하기
-		if(returnSlot[3].equals("1")) {
+		String[] slotList = (String[])map.get("lastSlot");
+		int noCoin = (int)map.get("noCoin");
+		int jackPot = (int)map.get("jackPot");
+		
+		//슬롯을 출력하기
+		if(noCoin == 1) {
 			System.out.println("\n금액이 부족합니다. 메뉴화면으로 돌아갑니다.\n");
 		}else {
-			System.out.println();
-			for(int i=0; i<returnSlot.length-1; i++) {
-				System.out.print(returnSlot[i]);
+			System.out.print("\n\n■");
+			for(int i=0; i<slotList.length; i++) {
+				System.out.print(" " + slotList[i] + " ");
+			}
+			System.out.println("■\n");
+			
+			// 슬롯 당첨유무
+			// jackPot이 1이면 당첨 아니면 미당첨
+			if (jackPot == 1) {
+				System.out.println("\n★앗싸! 당첨★ 3000원을 벌었다!\n");
+			}else {
+				System.out.println("\n당첨되지 않았습니다! 다음 기회를 노려보세요!\n\n");
+			}
 		}
-		System.out.println("\n");
-		// 결과값에 대한 당첨 유무를 확인하기 위해 resultSlot 호출
-		slot.resultSlot();
-		}
-	}
-	// 슬롯 당첨유무
-	public void resultSlot() {
-		// 당첨결과를 받을 jackpot변수
-		int jackpot = slot.resultSlot();
-		// jackpot이 1이면 당첨 아니면 미당첨
-		if (jackpot == 1) {
-			System.out.println("\n★앗싸! 당첨★ 천원을 벌었다!\n");
-		}else {
-			System.out.println("\n 당첨되지 않았습니다! 다음 기회를 노려보세요!\n");
-		}
+		
+	
+}
+	private char[] slotList(int i) {
+		return null;
 	}
 	// 잔고확인
 	public void myPage() {
@@ -95,22 +98,34 @@ public class SlotMenu {
 	// 로또구매
 	public void lotto() {
 		// 로또의 결과를 넘겨받을 random변수
-		int random = slot.lotto();
+		HashMap<String, Object> map = slot.lotto();
+		int noCoin = (int)map.get("코인");
+		int random = (int)map.get("등수");
 		
-		// random변수의 값에 따른 결과 출력
-		switch(random) {
-		case 1: System.out.println("\n1등 당첨!! 상금 100,000원 입금완.\n");
+		if(noCoin == 1) {
+			System.out.println("\n금액이 부족합니다. 메뉴화면으로 돌아갑니다.\n");
+		} else {
+			// random변수의 값에 따른 결과 출력
+			switch (random) {
+			case 1:
+				System.out.println("\n1등 당첨!! 상금 100,000원 입금완.\n");
 				break;
-		case 2: System.out.println("\n2등 당첨!! 상금 50,000원 입금완.\n");
+			case 2:
+				System.out.println("\n2등 당첨!! 상금 50,000원 입금완.\n");
 				break;
-		case 3: System.out.println("\n3등 당첨!! 상금 10,000원 입금완.\n");
+			case 3:
+				System.out.println("\n3등 당첨!! 상금 10,000원 입금완.\n");
 				break;
-		case 4: System.out.println("\n4등 당첨!! 상금 5,000원 입금완.\n");
+			case 4:
+				System.out.println("\n4등 당첨!! 상금 5,000원 입금완.\n");
 				break;
-		case 5: System.out.println("\n5등 당첨!! 상금 1,000원 입금완.\n");
+			case 5:
+				System.out.println("\n5등 당첨!! 상금 1,000원 입금완.\n");
 				break;
-		default : System.out.println("\n꽝!꽝꽝!!꽝꽝꽝!!!꽝철인데요!!!\n");
+			default:
+				System.out.println("\n꽝!꽝꽝!!꽝꽝꽝!!!꽝철인데요!!!\n");
 				break;
-	}
+			}
+		}
 	}
 }

@@ -9,7 +9,8 @@ public class Run {
 		Q q = new Q();
 		
 		//q.q0530();
-		q.q0531();
+		//q.q0531();
+		q.q0601();
 	}
 
 }

@@ -51,5 +51,21 @@ public class Q {
 		System.out.println(date2.format(date1));
 	}
 	
+	public void q0601() {
+		// 1020
+		Scanner sc = new Scanner(System.in);
+		System.out.print("주민번호 입력 ('-'포함) : ");
+		String[] jumin = sc.nextLine().split("-");
+		
+		System.out.println(jumin[0] + jumin[1]);
+		
+		
+		// 1021
+		System.out.print("50자 이하 단어 입력 : ");
+		String word = sc.nextLine();
+		
+		System.out.println(word);
+	}
+	
 	
 }
