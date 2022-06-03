@@ -67,5 +67,47 @@ public class Q {
 		System.out.println(word);
 	}
 	
+	public void q0602() {
+		// 1022
+		Scanner sc = new Scanner(System.in);
+		System.out.println(sc.nextLine());
+		
+		// 1023
+		double d = sc.nextDouble();
+
+		String dou = String.valueOf(d);
+		String[] doub = dou.split("\\.");
+		System.out.println(doub[0] + "\n" + doub[1]);
+		
+	}
+	
+	public void q0603() {
+		// 1024
+		// 단어 한개 입력받기
+		Scanner sc = new Scanner(System.in);
+		String word = sc.nextLine();
+		
+		// for문 돌려서 단어의 길이만큼 돌리고, 단어의 각 인덱스에 해당하는 문자를 차례차례뽑아줌
+		for(int i=0; i<word.length(); i++) {
+			System.out.println("'" + word.charAt(i) + "'");
+		}
+		
+		// 1025
+		// 다섯자리의 정수 1개 입력받기
+		int num = sc.nextInt();
+		// 입력받은 정수를 자리별로 나누기 위해 String으로 파싱하기
+		String sNum = String.valueOf(num);
+		// 파싱된 sNum을 이중for문을 통해 출력
+		for(int i=0; i<sNum.length(); i++) {
+			System.out.print("[" + sNum.charAt(i)); 
+			for(int j=sNum.length(); j>i+1; j--) {
+				System.out.print("0");
+			}
+			System.out.println("]");
+		}
+		
+		
+	}
+	
 	
 }
