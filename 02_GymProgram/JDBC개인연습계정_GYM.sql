@@ -6,7 +6,7 @@ CREATE TABLE GYM_MEM(
     MEM_NO NUMBER PRIMARY KEY,                   -- 회원번호
     MEM_NAME VARCHAR(20) NOT NULL,               -- 회원명
     BIRTH VARCHAR2(10) NOT NULL,                -- 생년월일
-    GENDER CHAR(1) DEFAULT 'F' CHECK(GENDER IN ('M','F')), -- 성별
+    GENDER CHAR(1) DEFAULT '여' CHECK(GENDER IN ('남','여')), -- 성별
     HEIGHT VARCHAR2(5),                         -- 키
     WEIGHT VARCHAR2(5),                         -- 몸무게
     PT CHAR(1) DEFAULT 'N' CHECK(PT IN ('Y','N')),      -- PT등록여부
@@ -15,6 +15,10 @@ CREATE TABLE GYM_MEM(
     ENROLL_DATE DATE DEFAULT SYSDATE,           -- 회원가입일
     END_DATE DATE NOT NULL                      -- 회원등록권종료일
 );
+
+DROP SEQUENCE SEQ_MEMNO;
+CREATE SEQUENCE SEQ_MEMNO NOCACHE;
+ALTER TABLE GYM_MEM MODIFY GENDER CHAR(3);
 
 COMMENT ON COLUMN GYM_MEM.MEM_NO IS '회원번호';
 COMMENT ON COLUMN GYM_MEM.MEM_NAME IS '회원명';

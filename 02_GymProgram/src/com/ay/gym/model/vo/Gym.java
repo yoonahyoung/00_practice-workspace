@@ -47,6 +47,14 @@ public class Gym {
 		this.enrollDate = enrollDate;
 		this.endDate = endDate;
 	}
+	
+	public Gym(String memName, String birth, String gender, Date endDate) {
+		super();
+		this.memName = memName;
+		this.birth = birth;
+		this.gender = gender;
+		this.endDate = endDate;
+	}
 
 	public int getMemNo() {
 		return memNo;
