@@ -106,6 +106,18 @@ public class Q {
 			System.out.println("]");
 		}
 		
+	}
+	
+	public void q0604() {
+		// 1026
+		Scanner sc = new Scanner(System.in);
+		String[] time = sc.nextLine().split(":");
+		System.out.printf("%s", Integer.parseInt(time[1])); // 00분일때 0으로 해야 통과길래 int로 바꿈
+		
+		
+		// 1027
+		String[] date = sc.nextLine().split("\\.");
+		System.out.printf("%02d-%02d-%04d", Integer.parseInt(date[2]),Integer.parseInt(date[1]), Integer.parseInt(date[0]));
 		
 	}
 	
