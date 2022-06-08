@@ -39,6 +39,47 @@ INSERT INTO GYM_MEM(MEM_NO, MEM_NAME, BIRTH, GENDER, END_DATE) VALUES(SEQ_MEMNO,
 
 DELETE FROM GYM_MEM WHERE MEM_NO = '' AND MEM_NAME = '';
 
+INSERT
+		  INTO GYM_MEM
+		  	   (
+		  		  MEM_NO
+		  		, MEM_NAME
+		  		, BIRTH
+		  		, GENDER
+		  		, END_DATE
+		  		) 
+	    VALUES 
+	    	   (
+	    		SEQ_MEMNO.NEXTVAL
+	    	  , '김현이'
+	    	  , '89/07/03'
+	    	  , '여'
+	    	  , '2023/03/12'
+	    	  );
+commit;
 
-
+SELECT 
+			   MEM_NO
+			 , MEM_NAME
+			 , BIRTH
+			 , GENDER
+			 , HEIGHT
+			 , WEIGHT
+			 , PT
+			 , TEACHER
+			 , VIP
+			 , ENROLL_DATE
+			 , END_DATE
+		  FROM GYM_MEM
+		 WHERE MEM_NAME LIKE '%김%';
+         
+         UPDATE 
+			   GYM_MEM 
+		   SET 
+		   	   HEIGHT = '189'
+		     , WEIGHT = '80'
+		     , PT = 'Y'
+		     , TEACHER = '김지구'
+		     , VIP = 'BRONZE'
+		 WHERE MEM_NO = 8;
 

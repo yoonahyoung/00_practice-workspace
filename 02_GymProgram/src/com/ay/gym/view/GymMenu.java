@@ -18,7 +18,7 @@ public class GymMenu {
 	public void mainMenu() {
 		
 		while(true) {
-			System.out.println("\n=== 회원 관리 프로그램 ===");
+			System.out.println("\n=== GYM 회원 관리 프로그램 ===");
 			System.out.println("1. 전체 회원 조회");
 			System.out.println("2. 회원 등록");
 			System.out.println("3. 회원 검색");
@@ -37,6 +37,7 @@ public class GymMenu {
 			case 5: deleteMember(); break;
 			case 0: System.out.println("프로그램을 종료하시겠습니까?\n   1. 확인     2. 취소"); 
 					if(sc.nextInt() == 1) { // 종료버튼 누를시 한번 더 확인하기
+						System.out.println("프로그램이 종료됩니다.");
 						return;
 					}else {
 						break;
@@ -110,11 +111,11 @@ public class GymMenu {
 			System.out.print("몸무게 : ");
 			String weight = sc.nextLine();
 			System.out.print("PT등록(Y/N) : ");
-			String pt = sc.nextLine();
+			String pt = sc.nextLine().toUpperCase();
 			System.out.print("트레이너 : ");
 			String teacher = sc.nextLine();
 			System.out.print("등급 : ");
-			String vip = sc.nextLine();
+			String vip = sc.nextLine().toUpperCase();
 			
 			HashMap<String, Object> map = new HashMap<>();
 			map.put("회원번호", memNo);

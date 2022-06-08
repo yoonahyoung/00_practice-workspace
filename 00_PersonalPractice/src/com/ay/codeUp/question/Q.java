@@ -81,7 +81,7 @@ public class Q {
 		
 	}
 	
-	public void q0603() {
+	public void q0606() {
 		// 1024
 		// 단어 한개 입력받기
 		Scanner sc = new Scanner(System.in);
@@ -108,7 +108,7 @@ public class Q {
 		
 	}
 	
-	public void q0604() {
+	public void q0607() {
 		// 1026
 		Scanner sc = new Scanner(System.in);
 		String[] time = sc.nextLine().split(":");
@@ -121,5 +121,24 @@ public class Q {
 		
 	}
 	
+	
+	public void q0608() {
+		// 1028
+		Scanner sc = new Scanner(System.in);
+		System.out.println(sc.nextLine());
+		
+		// 1029
+		System.out.printf("%.11f", sc.nextDouble());
+		
+	}
+	
+	public void q0609() {
+		// 1030
+		Scanner sc = new Scanner(System.in);
+		System.out.println(sc.nextLong());
+		
+		// 1031
+		System.out.printf("%o", sc.nextInt());
+	}
 	
 }

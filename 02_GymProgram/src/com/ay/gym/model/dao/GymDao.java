@@ -1,5 +1,7 @@
 package com.ay.gym.model.dao;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -8,26 +10,33 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 
+import static com.ay.gym.common.JDBCTemplate.*;
 import com.ay.gym.model.vo.Gym;
 
 public class GymDao {
 	
-	public ArrayList<Gym> selectMember() {
-		
+	Properties prop = new Properties();
+	
+	public GymDao(){
+		try {
+			prop.loadFromXML(new FileInputStream("resources/query.xml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Gym> selectMember(Connection conn) {
 		ArrayList<Gym> list = new ArrayList<>();
-		
-		Connection conn = null;
-		PreparedStatement pst = null;
+		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String sql = "SELECT * FROM GYM_MEM";
+		String sql = prop.getProperty("selectMember");
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "GYM", "GYM");
-			pst = conn.prepareStatement(sql);
-			rset = pst.executeQuery();
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
 			
 			while(rset.next()) {
 				list.add(new Gym(rset.getInt("mem_no"), rset.getString("mem_name"), rset.getString("birth"),
@@ -36,80 +45,51 @@ public class GymDao {
 							  rset.getDate("enroll_date"), rset.getDate("end_date")));
 			}
 			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				rset.close();
-				pst.close();
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			close(rset);
+			close(pstmt);
 		}
 		return list;
 		
 	}
 	
-	public int insertMember(String name, String birth, String gender, Date endDate) {
+	public int insertMember(Connection conn, String name, String birth, String gender, Date endDate) {
 		int result = 0;
-		Connection conn = null;
-		PreparedStatement pst = null;
-		
-		String sql = "INSERT INTO GYM_MEM(MEM_NO, MEM_NAME, BIRTH, GENDER, END_DATE) VALUES(SEQ_MEMNO.NEXTVAL, ?, ?, ?, ?)";
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("insertMember");
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "GYM", "GYM");
-			pst = conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql);
 			
-			pst.setString(1, name);
-			pst.setString(2, birth);
-			pst.setString(3, gender);
-			pst.setDate(4, endDate);
+			pstmt.setString(1, name);
+			pstmt.setString(2, birth);
+			pstmt.setString(3, gender);
+			pstmt.setDate(4, endDate);
 			
+			result = pstmt.executeUpdate();
 			
-			result = pst.executeUpdate();
-			
-			if(result > 0 ) {
-				conn.commit();
-			}else {
-				conn.rollback();
-			}
-			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				pst.close();
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			close(pstmt);
 		}
-		
-		
 		return result;
 	}
 	
-	public ArrayList<Gym> searchMember(String name) {
+	
+	public ArrayList<Gym> searchMember(String name, Connection conn) {
 		ArrayList<Gym> list = new ArrayList<>();
-		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rset = null;
 		
-		String sql = "SELECT * FROM GYM_MEM WHERE MEM_NAME = ?";
+		String sql = prop.getProperty("searchMember");
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "GYM", "GYM");
 			pst = conn.prepareStatement(sql);
 			
-			pst.setString(1, name);
+			pst.setString(1, "%" + name + "%");
 			
 			rset = pst.executeQuery();
 			
@@ -120,34 +100,23 @@ public class GymDao {
 							  rset.getDate("enroll_date"), rset.getDate("end_date")));
 			}
 			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				rset.close();
-				pst.close();
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			close(rset);
+			close(pst);
 		}
 		
 		return list;
 		
 	}
 	
-	public int updateMember(HashMap<String, Object> map) {
+	public int updateMember(HashMap<String, Object> map, Connection conn) {
 		int result = 0;
-		Connection conn = null;
 		PreparedStatement pst = null;
-		
-		String sql = "UPDATE GYM_MEM SET MEM_NAME = ?, BIRTH = ?, GENDER = ?, END_DATE = ? WHERE MEM_NO = ?";
+		String sql = prop.getProperty("updateMember");
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "GYM", "GYM");
 			pst = conn.prepareStatement(sql);
 			
 			pst.setString(1, (String) map.get("이름"));
@@ -164,33 +133,21 @@ public class GymDao {
 				conn.rollback();
 			}
 			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				pst.close();
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			close(pst);
 		}
-		
-		
 		return result;
 	}
 	
-	public int updateMemberEtc(HashMap<String, Object> map) {
+	public int updateMemberEtc(HashMap<String, Object> map, Connection conn) {
 		int result = 0;
-		Connection conn = null;
 		PreparedStatement pst = null;
 		
-		String sql = "UPDATE GYM_MEM SET HEIGHT = ?, WEIGHT = ?, PT = ?, TEACHER = ?, VIP = ? WHERE MEM_NO = ?";
+		String sql = prop.getProperty("updateMemberEtc");
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "GYM", "GYM");
 			pst = conn.prepareStatement(sql);
 			
 			pst.setString(1, (String)map.get("키"));
@@ -202,38 +159,22 @@ public class GymDao {
 			
 			result = pst.executeUpdate();
 			
-			if(result > 0 ) {
-				conn.commit();
-			}else {
-				conn.rollback();
-			}
-			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				pst.close();
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			close(pst);
 		}
 		
 		return result;
 	}
 	
-	public int deleteMember(String memNo, String name) {
+	public int deleteMember(String memNo, String name, Connection conn) {
 		int result = 0;
-		Connection conn = null;
 		PreparedStatement pst = null;
 		
-		String sql = "DELETE FROM GYM_MEM WHERE MEM_NO = ? AND MEM_NAME = ?";
+		String sql = prop.getProperty("deleteMember");
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "GYM", "GYM");
 			pst = conn.prepareStatement(sql);
 			
 			pst.setString(1, memNo);
@@ -241,27 +182,15 @@ public class GymDao {
 			
 			result = pst.executeUpdate();
 			
-			if(result > 0 ) {
-				conn.commit();
-			}else {
-				conn.rollback();
-			}
-			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				pst.close();
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			close(pst);
 		}
 		
 		return result;
 	}
+
 	
 
 }
